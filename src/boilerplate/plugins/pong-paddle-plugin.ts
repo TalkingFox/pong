@@ -10,6 +10,7 @@ export class PongPaddlePlugin extends Phaser.Plugins.BasePlugin {
                 this.scene.add.existing(paddle);
                 this.scene.physics.add.existing(paddle);
                 paddle.setCollideWorldBounds(true);
+                paddle.setImmovable(true);
                 return paddle;
             }
         )

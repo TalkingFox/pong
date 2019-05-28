@@ -25,9 +25,11 @@ export class MainScene extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.wasd = new Wasd(this.input);
 
-        this.leftPaddle = this.add['pongPaddle'](400, 300);
-        this.rightPaddle = this.add['pongPaddle'](100, 300);
+        this.leftPaddle = this.add['pongPaddle'](100, 300);
+        this.rightPaddle = this.add['pongPaddle'](700, 300);
         this.ball = this.add['pongBall'](250, 300);
+
+        this.physics.add.collider(this.ball, [this.leftPaddle, this.rightPaddle]);
     }
 
     update(): void {

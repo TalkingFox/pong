@@ -8,9 +8,10 @@ export class PongBallPlugin extends Phaser.Plugins.BasePlugin {
             function(x: number, y: number) {
                 const ball = new Ball(this.scene, x, y);
                 this.scene.add.existing(ball);
-                this.scene.physics.add.existing(ball);
+                this.scene.physics.add.existing(ball)
                 ball.setCollideWorldBounds(true);
                 ball.setVelocityX(200);
+                ball.setBounce(1);
                 return ball;
             }
         )
