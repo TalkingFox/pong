@@ -1,5 +1,5 @@
 import { Wasd } from "../wasd";
-import { Ball } from "./ball";
+import { Score } from "./score";
 
 export class MainScene extends Phaser.Scene {
     private leftPaddle: Phaser.Physics.Arcade.Image;
@@ -8,12 +8,13 @@ export class MainScene extends Phaser.Scene {
     
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private wasd: Wasd;
-
+    private score: Score;
 
     constructor() {
         super({
             key: "MainScene"
         });
+        this.score = new Score();
     }
 
     preload(): void {
@@ -30,6 +31,14 @@ export class MainScene extends Phaser.Scene {
         this.ball = this.add['pongBall'](250, 300);
 
         this.physics.add.collider(this.ball, [this.leftPaddle, this.rightPaddle]);
+        
+        Phaser.Actions.Call(
+            [this.ball],
+            (ball) =>{
+                (ball.body as Phaser.Physics.Arcade.Body).onWorldBounds = true;
+            },
+            null)
+        this.physics.world.on('worldbounds', this.onWorldBounds);
     }
 
     update(): void {
@@ -46,5 +55,14 @@ export class MainScene extends Phaser.Scene {
         } else if (this.wasd.S.isDown) {
             this.rightPaddle.setVelocityY(300);
         }
+    }
+
+    onWorldBounds(_body, _blockedUp: boolean, _blockedDown: boolean, blockedLeft: boolean, blockedRight: boolean) {
+        if (blockedRight) {
+            this.score.Lefty++;
+        } else if(blockedLeft) {
+            this.score.Righty++;
+        }
+        
     }
 }
