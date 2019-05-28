@@ -1,7 +1,8 @@
 export class MainScene extends Phaser.Scene {
-    private player1: Phaser.GameObjects.Sprite;
-    private player2: Phaser.GameObjects.Sprite;
-    private ball: Phaser.GameObjects.Sprite;
+    private leftPaddle: Phaser.Physics.Arcade.Image;
+    private rightPaddle: Phaser.Physics.Arcade.Image;
+    private ball: Phaser.Physics.Arcade.Sprite;
+    private cursors: Phaser.Input.Keyboard.CursorKeys;
 
     constructor() {
         super({
@@ -15,9 +16,24 @@ export class MainScene extends Phaser.Scene {
     }
 
     create(): void {
-        this.physics.world
-        this.player1 = this.add.sprite(400, 300, "paddle");
-        this.player2 = this.add.sprite(100, 300, 'paddle');
-        this.ball = this.add.sprite(250, 300, 'ball');
+        this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.leftPaddle = this.physics.add.image(400, 300, "paddle");
+        this.leftPaddle.setCollideWorldBounds(true);
+        
+        this.rightPaddle = this.physics.add.sprite(100, 300, 'paddle');
+        this.rightPaddle.setCollideWorldBounds(true)
+        
+        this.ball = this.physics.add.sprite(250, 300, 'ball');
+        this.ball.setCollideWorldBounds(true);
+    }
+
+    update(): void {
+        this.leftPaddle.setVelocity(0);
+        if (this.cursors.up.isDown) {
+            this.leftPaddle.setVelocityY(-300);
+        } else if (this.cursors.down.isDown) {
+            this.leftPaddle.setVelocityY(300)
+        }
     }
 }
