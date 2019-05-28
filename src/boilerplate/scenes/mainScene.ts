@@ -1,11 +1,12 @@
 import { Wasd } from "../wasd";
+import { Ball } from "./ball";
 
 export class MainScene extends Phaser.Scene {
     private leftPaddle: Phaser.Physics.Arcade.Image;
     private rightPaddle: Phaser.Physics.Arcade.Image;
-    private ball: Phaser.Physics.Arcade.Sprite;
+    private ball: Phaser.GameObjects.GameObject;
     
-    private cursors: Phaser.Input.Keyboard.CursorKeys;
+    private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private wasd: Wasd;
 
 
@@ -24,14 +25,9 @@ export class MainScene extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.wasd = new Wasd(this.input);
 
-        this.leftPaddle = this.physics.add.image(400, 300, "paddle");
-        this.leftPaddle.setCollideWorldBounds(true);
-        
-        this.rightPaddle = this.physics.add.sprite(100, 300, 'paddle');
-        this.rightPaddle.setCollideWorldBounds(true)
-        
-        this.ball = this.physics.add.sprite(250, 300, 'ball');
-        this.ball.setCollideWorldBounds(true);
+        this.leftPaddle = this.add['pongPaddle'](400, 300);
+        this.rightPaddle = this.add['pongPaddle'](100, 300);
+        this.ball = this.add['pongBall'](250, 300);
     }
 
     update(): void {
