@@ -1,10 +1,11 @@
 import { Wasd } from "../wasd";
 import { Score } from "./score";
+import { Ball } from "./ball";
 
 export class MainScene extends Phaser.Scene {
     private leftPaddle: Phaser.Physics.Arcade.Image;
     private rightPaddle: Phaser.Physics.Arcade.Image;
-    private ball: Phaser.GameObjects.GameObject;
+    private ball: Ball;
     
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private wasd: Wasd;
@@ -31,7 +32,11 @@ export class MainScene extends Phaser.Scene {
         this.rightPaddle = this.add['pongPaddle'](700, 300);
         this.ball = this.add['pongBall'](250, 300);
 
-        this.physics.add.collider(this.ball, [this.leftPaddle, this.rightPaddle]);
+        this.physics.add.collider(this.ball, [this.leftPaddle, this.rightPaddle],() => {
+            console.log(this.ball.body.velocity.x);
+            this.ball.setVelocityX(this.ball.body.velocity.x * 1.1);
+            this.ball.setVelocityY(this.ball.body.velocity.y * 1.1);
+        });
         
         Phaser.Actions.Call(
             [this.ball],
@@ -63,6 +68,10 @@ export class MainScene extends Phaser.Scene {
             this.score.Lefty++;
         } else if(blockedLeft) {
             this.score.Righty++;
+        }
+
+        if (blockedLeft || blockedRight) {
+            this.ball.reset();
         }
         
     }
