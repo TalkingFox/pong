@@ -1,3 +1,5 @@
+import { environment } from "../environment";
+
 export class Ball extends Phaser.Physics.Arcade.Sprite {
     private startingPosition: Phaser.Math.Vector2;
 
@@ -6,16 +8,25 @@ export class Ball extends Phaser.Physics.Arcade.Sprite {
         this.startingPosition = new Phaser.Math.Vector2(x, y);
     }
 
-    public initiailize(): void {
+    public initialize(): void {
         this.setCollideWorldBounds(true);
-        this.setMaxVelocity(1000);
+        this.setMaxVelocity(environment.MaxBallVelocity);
         this.setBounce(1);
-        this.setVelocityX(250);
-        this.setPosition(this.startingPosition.x, this.startingPosition.y);
+        this.reset();
     }
 
     public reset(): void {
-        this.setVelocityX(250);
+        const directionX = (Math.random() >= 0.5) ?
+            1 :
+            -1;
+        const directionY = (Math.random() >= 0.5) ?
+            1 :
+            -1;
+        const angle = Math.floor(Math.random() * environment.StartingBallVelocity + 1);
+
+        this.setAngularVelocity(10);
+        this.setVelocityX(directionX * environment.StartingBallVelocity);
+        this.setVelocityY(directionY * angle);
         this.setPosition(this.startingPosition.x, this.startingPosition.y);
     }
 }

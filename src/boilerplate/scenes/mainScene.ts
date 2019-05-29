@@ -33,9 +33,9 @@ export class MainScene extends Phaser.Scene {
         this.ball = this.add['pongBall'](250, 300);
 
         this.physics.add.collider(this.ball, [this.leftPaddle, this.rightPaddle],() => {
-            console.log(this.ball.body.velocity.x);
             this.ball.setVelocityX(this.ball.body.velocity.x * 1.1);
             this.ball.setVelocityY(this.ball.body.velocity.y * 1.1);
+            this.ball.setAngularVelocity((this.ball.body as any).angularVelocity * -1.5);
         });
         
         Phaser.Actions.Call(
