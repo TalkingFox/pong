@@ -23,6 +23,7 @@ export class MainScene extends Phaser.Scene {
     }
 
     create(): void {
+        this.score.register(this);
         this.cursors = this.input.keyboard.createCursorKeys();
         this.wasd = new Wasd(this.input);
 
@@ -38,7 +39,7 @@ export class MainScene extends Phaser.Scene {
                 (ball.body as Phaser.Physics.Arcade.Body).onWorldBounds = true;
             },
             null)
-        this.physics.world.on('worldbounds', this.onWorldBounds);
+        this.physics.world.on('worldbounds', this.onWorldBounds.bind(this));
     }
 
     update(): void {
