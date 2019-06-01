@@ -1,4 +1,6 @@
-export class Score {
+import { Score } from "./score-person";
+
+export class ScoreBoard {
     private leftScore: number;
     public get Lefty(): number {
         return this.leftScore;
@@ -15,6 +17,25 @@ export class Score {
     public set Righty(score: number) {
         this.rightScore = score;
         this.rightText.setText('Righty: ' + this.rightScore);
+    }
+
+    public get HighestScore(): Score {
+        if (this.Lefty > this.Righty) {
+            return {
+                player: 'Lefty',
+                value: this.Lefty
+            };
+        } else if (this.Righty > this.Lefty) {
+            return {
+                player: 'Righty',
+                value: this.Righty
+            }
+        } else {
+            return {
+                player: 'Tie',
+                value: this.Lefty
+            }
+        }
     }
 
     private leftText: Phaser.GameObjects.Text;

@@ -1,14 +1,25 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <title>TEMPLATE</title>
     <link rel="stylesheet" type="text/css" href="styles/main.css">
     <script src="dist/bundle.js"></script>
-  </head>
-  <body>
+    <link href="https://fonts.googleapis.com/css?family=Spectral&display=swap" rel="stylesheet">
+</head>
+
+<body>
     <div class="container">
-      <div id="game"></div>
+        <div id="game"></div>
     </div>
-  </body>
+
+    <div id="overlay">
+        <div id="gameOver" class="hidden">
+            <p id="gameOverMessage"></p>
+            <button id="gameOverPlayAgain">Play Again?</button>
+        </div>
+    </div>
+</body>
+
 </html>

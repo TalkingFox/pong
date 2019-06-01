@@ -1,6 +1,8 @@
 import { Wasd } from "../wasd";
-import { Score } from "./score";
+import { ScoreBoard } from "./score";
 import { Ball } from "./ball";
+import { environment } from "../environment";
+import { GameOver } from "./game-over";
 
 export class MainScene extends Phaser.Scene {
     private leftPaddle: Phaser.Physics.Arcade.Image;
@@ -9,13 +11,16 @@ export class MainScene extends Phaser.Scene {
     
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private wasd: Wasd;
-    private score: Score;
+    private score: ScoreBoard;
+
+    private gameOver: GameOver;
 
     constructor() {
         super({
             key: "MainScene"
         });
-        this.score = new Score();
+        this.score = new ScoreBoard();
+        this.gameOver = new GameOver();
     }
 
     preload(): void {
@@ -69,10 +74,23 @@ export class MainScene extends Phaser.Scene {
         } else if(blockedLeft) {
             this.score.Righty++;
         }
+        
+        if (this.score.HighestScore.value === environment.EndGameScore) {
+            this.endGame();
+        }
 
         if (blockedLeft || blockedRight) {
             this.ball.reset();
         }
-        
+    }
+
+    endGame(): void {
+        this.ball.visible = false;
+        this.scene.pause();
+        var gameOver = new GameOver();
+        gameOver.display(this.score.HighestScore.player).then(() => {
+            gameOver.dispose();
+            this.scene.restart()
+        });
     }
 }

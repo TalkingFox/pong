@@ -1,10 +1,51 @@
 #game {
-    margin:auto;
-    width:800px;
-    height:600px;
+    margin: auto;
+    width: 800px;
+    height: 600px;
     border: 1px solid purple;
+}
+
+#overlay {
+    position: absolute;
+    width: 800px;
+    height: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    top: 10px;
+    right: 0;
+}
+
+#gameOver {
+    border: 1px solid purple;
+    margin: auto;
+    width: 50%;
+    height: 25%;
+    margin-top: 15%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: gold;
+    font-family: 'Spectral', serif;
+    text-align: center;
+}
+
+#gameOverPlayAgain {
+    width: 50%;
+    border: 1px solid purple;
+    border-radius: 5px;
+    min-height: 25px;
+    background: black;
+    color: gold;
+    cursor: pointer;
+}
+
+#gameOverPlayAgain:hover {
+    background: purple;
 }
 
 body {
     background-color: black;
+}
+
+.hidden {
+    display: none;
 }
