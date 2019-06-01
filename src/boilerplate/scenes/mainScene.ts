@@ -4,6 +4,7 @@ import { Ball } from "./ball";
 import { environment } from "../environment";
 import { GameOver } from "./game-over";
 import { MusicMaker } from "../music-maker";
+import { Countdown } from "./countdown";
 
 export class MainScene extends Phaser.Scene {
     private leftPaddle: Phaser.Physics.Arcade.Image;
@@ -73,7 +74,11 @@ export class MainScene extends Phaser.Scene {
         }
     }
 
-    onWorldBounds(_body, _blockedUp: boolean, _blockedDown: boolean, blockedLeft: boolean, blockedRight: boolean) {
+    onWorldBounds(_body, blockedUp: boolean, blockedDown: boolean, blockedLeft: boolean, blockedRight: boolean) {
+        if (blockedUp || blockedDown) {
+            this.music.Beep();
+        }
+        
         if (blockedRight) {
             this.score.Lefty++;
         } else if(blockedLeft) {
@@ -85,7 +90,13 @@ export class MainScene extends Phaser.Scene {
         }
 
         if (blockedLeft || blockedRight) {
-            this.ball.reset();
+            this.music.OutOfBounds();
+            this.ball.stop();
+            const countdown = new Countdown();
+            countdown.countFrom(3).then(() => {
+                this.ball.active = true;
+                this.ball.reset();
+            });
         }
     }
 

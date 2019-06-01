@@ -1,10 +1,11 @@
-export class GameOver {
-    private windowElement: HTMLElement;
+import { OverlayElement } from "../ui/overlay-element";
+
+export class GameOver extends OverlayElement{
     private messageElement: HTMLParagraphElement;
     private playAgainElement: HTMLButtonElement;
 
     public constructor() {
-        this.windowElement = document.getElementById('gameOver');
+        super('gameOver');
         this.messageElement = document.getElementById('gameOverMessage') as HTMLParagraphElement;
         this.playAgainElement = document.getElementById('gameOverPlayAgain') as HTMLButtonElement;
     }
@@ -22,24 +23,7 @@ export class GameOver {
         return promise;
     }
 
-    public dispose(): void {
-        this.visible = false;
-    }
-
     public set message(message: string) {
         this.messageElement.textContent = message;
-    }
-
-    public set visible(isVisible: boolean) {
-        if (this.windowElement.classList.contains('hidden')
-            && !isVisible) {
-            return;
-        }
-
-        if (isVisible) {
-            this.windowElement.classList.remove('hidden');
-        } else {
-            this.windowElement.classList.add('hidden');
-        }
     }
 }

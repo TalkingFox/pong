@@ -16,6 +16,7 @@ export class Ball extends Phaser.Physics.Arcade.Sprite {
     }
 
     public reset(): void {
+        this.visible = true;
         const directionX = (Math.random() >= 0.5) ?
             1 :
             -1;
@@ -28,5 +29,10 @@ export class Ball extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(directionX * environment.StartingBallVelocity);
         this.setVelocityY(directionY * angle);
         this.setPosition(this.startingPosition.x, this.startingPosition.y);
+    }
+
+    public stop(): void {
+        this.setVelocity(0,0);
+        this.visible = false;
     }
 }
