@@ -3,6 +3,7 @@ import { ScoreBoard } from "./score";
 import { Ball } from "./ball";
 import { environment } from "../environment";
 import { GameOver } from "./game-over";
+import { MusicMaker } from "../music-maker";
 
 export class MainScene extends Phaser.Scene {
     private leftPaddle: Phaser.Physics.Arcade.Image;
@@ -13,6 +14,8 @@ export class MainScene extends Phaser.Scene {
     private wasd: Wasd;
     private score: ScoreBoard;
 
+    private music: MusicMaker;
+
     private gameOver: GameOver;
 
     constructor() {
@@ -21,6 +24,7 @@ export class MainScene extends Phaser.Scene {
         });
         this.score = new ScoreBoard();
         this.gameOver = new GameOver();
+        this.music = new MusicMaker();
     }
 
     preload(): void {
@@ -41,6 +45,7 @@ export class MainScene extends Phaser.Scene {
             this.ball.setVelocityX(this.ball.body.velocity.x * 1.1);
             this.ball.setVelocityY(this.ball.body.velocity.y * 1.1);
             this.ball.setAngularVelocity((this.ball.body as any).angularVelocity * -1.5);
+            this.music.Beep();
         });
         
         Phaser.Actions.Call(
