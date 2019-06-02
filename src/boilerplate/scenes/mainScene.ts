@@ -59,18 +59,18 @@ export class MainScene extends Phaser.Scene {
     }
 
     update(): void {
-        this.leftPaddle.setVelocity(0);
+        this.rightPaddle.setVelocity(0);
         if (this.cursors.up.isDown) {
-            this.leftPaddle.setVelocityY(-300);
+            this.rightPaddle.setVelocityY(-300);
         } else if (this.cursors.down.isDown) {
-            this.leftPaddle.setVelocityY(300)
+            this.rightPaddle.setVelocityY(300)
         }
 
-        this.rightPaddle.setVelocity(0);
+        this.leftPaddle.setVelocity(0);
         if (this.wasd.W.isDown) {
-            this.rightPaddle.setVelocityY(-300);
+            this.leftPaddle.setVelocityY(-300);
         } else if (this.wasd.S.isDown) {
-            this.rightPaddle.setVelocityY(300);
+            this.leftPaddle.setVelocityY(300);
         }
     }
 
