@@ -19,7 +19,8 @@
     right: 0;
 }
 
-#gameOver {
+#gameOver,
+#connectStatus {
     border: 1px solid purple;
     margin: auto;
     width: 50%;

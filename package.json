@@ -9,6 +9,7 @@
     "webpack-dev-server": "3.1.14"
   },
   "dependencies": {
+    "foxconnect": "^0.0.41",
     "phaser": "^3.17.0",
     "tone": "^13.4.9"
   },
