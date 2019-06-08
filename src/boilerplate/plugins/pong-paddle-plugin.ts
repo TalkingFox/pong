@@ -1,4 +1,4 @@
-import { Paddle } from "../scenes/paddle";
+import { Paddle } from "../scenes/main/paddle";
 
 export class PongPaddlePlugin extends Phaser.Plugins.BasePlugin {
     constructor(pluginManager: Phaser.Plugins.PluginManager) {

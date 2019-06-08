@@ -1,4 +1,4 @@
-import { Ball } from "../scenes/ball";
+import { Ball } from "../scenes/main/ball";
 
 export class PongBallPlugin extends Phaser.Plugins.BasePlugin {
     constructor(pluginManager: Phaser.Plugins.PluginManager) {

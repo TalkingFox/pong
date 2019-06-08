@@ -1,4 +1,4 @@
-import { OverlayElement } from "../ui/overlay-element";
+import { OverlayElement } from "../../ui/overlay-element";
 
 export class GameOver extends OverlayElement{
     private messageElement: HTMLParagraphElement;

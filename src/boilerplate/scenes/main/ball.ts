@@ -1,4 +1,4 @@
-import { environment } from "../environment";
+import { environment } from "../../environment";
 
 export class Ball extends Phaser.Physics.Arcade.Sprite {
     private startingPosition: Phaser.Math.Vector2;

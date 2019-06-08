@@ -1,9 +1,9 @@
-import { Wasd } from "../wasd";
+import { Wasd } from "../../wasd";
 import { ScoreBoard } from "./score";
 import { Ball } from "./ball";
-import { environment } from "../environment";
+import { environment } from "../../environment";
 import { GameOver } from "./game-over";
-import { MusicMaker } from "../music-maker";
+import { MusicMaker } from "../../music-maker";
 import { Countdown } from "./countdown";
 
 export class MainScene extends Phaser.Scene {
@@ -14,9 +14,7 @@ export class MainScene extends Phaser.Scene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private wasd: Wasd;
     private score: ScoreBoard;
-
     private music: MusicMaker;
-
     private gameOver: GameOver;
 
     constructor() {
