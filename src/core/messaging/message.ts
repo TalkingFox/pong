@@ -6,4 +6,6 @@ export abstract class Message<T> {
 
 export enum MessageType {
     ReadyToPlay = 'ready-to-play',
+    GameIsReady = 'game-is-ready',
+    ChangePaddlePosition = 'change-paddle-position'
 }

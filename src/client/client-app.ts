@@ -3,11 +3,14 @@ import * as FoxConnect from 'foxconnect';
 import { environment } from "./environment";
 import { WaitingView } from "./waiting-view";
 import { ReadyToPlay } from "../core/messaging/ready-to-play";
-import { Message } from "../core/messaging/message";
+import { Message, MessageType } from "../core/messaging/message";
+import { GameView } from "./game-view";
+import { ChangePaddlePosition } from "../core/messaging/change-paddle-position";
 
 export class ClientApp {
     private connectView: ConnectView;
     private waitingView: WaitingView;
+    private gameView: GameView;
     private foxClient: FoxConnect.Client;
 
     constructor() {
@@ -21,20 +24,30 @@ export class ClientApp {
         this.connectView.visible = true;
 
         this.waitingView = new WaitingView(this.readyToPlay.bind(this));
+        this.gameView = new GameView(this.sliderValueChanged.bind(this));
     }
 
     private joinRoom(roomName: string): void {
         this.connectView.isLoading = true;
-        this.foxClient.joinRoom(roomName.trim()).then(() => {
-            this.connectView.isLoading = false;
-            this.connectView.visible = false;
-            this.waitingView.visible = true;
-        });
+        this.foxClient.joinRoom(roomName.trim())
+            .then(() => {
+                this.connectView.isLoading = false;
+                this.connectView.visible = false;
+                this.waitingView.visible = true;
+            })
+            .catch((error: string) => {
+                this.connectView.errorMessage = error;
+                this.connectView.isLoading = false;
+            });
     }
 
     private readyToPlay(): void {
         const message = new ReadyToPlay();
         this.foxClient.send(message);
+    }
+
+    private sliderValueChanged(value: number): void {
+        this.foxClient.send(new ChangePaddlePosition(value));
     }
 
     private onDisconnect(): void {
@@ -46,8 +59,12 @@ export class ClientApp {
     }
 
     private onMessageReceived(message: string): void {
-        console.log(message);
         const baseMessage = JSON.parse(message) as Message<any>;
-        console.log(baseMessage);
+        switch (baseMessage.type) {
+            case MessageType.GameIsReady:
+                this.waitingView.visible = false;
+                this.gameView.visible = true;
+                break;
+        }
     }
 }

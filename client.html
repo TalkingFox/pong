@@ -12,13 +12,13 @@
 
 <body>
     <div id="clientConnect" class="hidden">
-        <label>Enter the room name
-            <input id="roomName" />
-        </label>
+        <p>Enter the room name</p>
+        <input id="roomName" />
         <button id="roomJoin">Join Room</button>
         <div id="circle-loader" class="loader hidden">
             <div></div>
         </div>
+        <p id="errorMessage"></p>
     </div>
     <div id="clientWaiting" class="hidden">
         <button id="clientGoodToStart">I'm ready to play!</button>
@@ -30,7 +30,7 @@
         </label>
     </div>
     <div id="clientControl" class="hidden">
-        <input type="range" id="clientSlider" />
+        <input type="range" orient="vertical" id="clientSlider" />
     </div>
 </body>
 

@@ -3,14 +3,12 @@ import { environment } from '../../environment';
 import { RoomCreatedResponse } from 'foxconnect/dist/models/roomCreatedResponse';
 import { RoomView } from './room-view';
 import { Message, MessageType } from '../../../core/messaging/message';
-import { MainScene } from '../main/mainScene';
+import { GameIsReady } from '../../../core/messaging/game-is-ready';
+import { NetworkState } from '../../network-state';
 
 export class ConnectScene extends Phaser.Scene {
     private host: FoxConnect.Host;
     private roomView: RoomView;
-
-    private leftyClientId: string;
-    private rightyClientId: string;
 
     private leftyIsReady: boolean = false;
     private rightyIsReady: boolean = false;
@@ -26,12 +24,12 @@ export class ConnectScene extends Phaser.Scene {
             signalServer: environment.signalServer,
             onClientDisconnected: (clientId: string) => this.onClientDisconnected(clientId),
             onGuestJoined: (clientId: string) => this.guestJoined(clientId),
-            onMessageReceived: (clientId: string, message: string) => this.messageReceived(clientId, message),
+            onMessageReceived: (clientId: string, message: string) => NetworkState.intercept(clientId, message),
             onMessageFailed: (client: string, error: any) => {
-                console.log('message failed');
                 this.host.kickGuest(client);
             }
         });
+        NetworkState.listen(this.messageReceived.bind(this));
     }
 
     preload(): void { }
@@ -44,59 +42,58 @@ export class ConnectScene extends Phaser.Scene {
     }
 
     update(): void {
-        if (this.leftyClientId && this.rightyClientId) {
+        if (NetworkState.leftyClientId && NetworkState.rightyClientId) {
             this.roomView.startGameButton.disabled = false;
         }
 
         if (this.leftyIsReady && this.rightyIsReady) {
             this.roomView.visible = false;
-            this.scene.start('MainScene');
+            this.host.sendToAll(new GameIsReady());
+            this.scene.start('MainScene', this.host);
         }
     }
 
     private onClientDisconnected(clientId: string): void {
-        if (clientId == this.leftyClientId) {
+        if (clientId == NetworkState.leftyClientId) {
             this.roomView.lefty = 'Waiting for a Lefty';
-            this.leftyClientId = null;
+            NetworkState.leftyClientId = null;
         }
 
-        if (clientId == this.rightyClientId) {
+        if (clientId == NetworkState.rightyClientId) {
             this.roomView.righty = 'Waiting for a Righty';
-            this.rightyClientId = null;
+            NetworkState.rightyClientId = null;
         }
     }
 
     private guestJoined(clientId: string): void {
-        if (!this.leftyClientId) {
-            this.leftyClientId = clientId;
+        if (!NetworkState.leftyClientId) {
+            NetworkState.leftyClientId = clientId;
             this.roomView.lefty = 'A Lefty has joined!';
             return;
         }
-        
-        if (!this.rightyClientId) {
-            this.rightyClientId = clientId;
+
+        if (!NetworkState.rightyClientId) {
+            NetworkState.rightyClientId = clientId;
             this.roomView.righty = 'A Righty has joined!';
             return;
         }
     }
 
     private messageReceived(clientId: string, message: string): void {
-        console.log(message);
         const baseMessage = JSON.parse(message) as Message<any>;
-        console.log(baseMessage);
-
-        switch(baseMessage.type) {
-            case MessageType.ReadyToPlay: 
-                if (this.leftyClientId == clientId) {
+        switch (baseMessage.type) {
+            case MessageType.ReadyToPlay:
+                if (NetworkState.leftyClientId == clientId) {
                     this.leftyIsReady = true;
+                    this.roomView.lefty = 'Left is ready to play!';
                 }
-                if (this.rightyClientId == clientId) {
+                if (NetworkState.rightyClientId == clientId) {
                     this.rightyIsReady = true;
+                    this.roomView.righty = 'Righty is ready to play!'
                 }
-                console.log('someone is ready')
                 break;
-            default: 
-                alert('fuck');
+            case MessageType.ChangePaddlePosition:
+
         }
     }
 }

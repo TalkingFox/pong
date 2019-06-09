@@ -5,12 +5,17 @@ import { environment } from "../../environment";
 import { GameOver } from "./game-over";
 import { MusicMaker } from "../../music-maker";
 import { Countdown } from "./countdown";
+import * as FoxConnect from 'foxconnect';
+import { NetworkState } from "../../network-state";
+import { Message, MessageType } from "../../../core/messaging/message";
+import { ChangePaddlePosition } from "../../../core/messaging/change-paddle-position";
 
 export class MainScene extends Phaser.Scene {
     private leftPaddle: Phaser.Physics.Arcade.Image;
     private rightPaddle: Phaser.Physics.Arcade.Image;
     private ball: Ball;
-    
+    private host: FoxConnect.Host;
+
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private wasd: Wasd;
     private score: ScoreBoard;
@@ -24,6 +29,10 @@ export class MainScene extends Phaser.Scene {
         this.score = new ScoreBoard();
         this.gameOver = new GameOver();
         this.music = new MusicMaker();
+    }
+
+    init() {
+        NetworkState.listen(this.messageReceived.bind(this));
     }
 
     preload(): void {
@@ -40,16 +49,16 @@ export class MainScene extends Phaser.Scene {
         this.rightPaddle = this.add['pongPaddle'](700, 300);
         this.ball = this.add['pongBall'](250, 300);
 
-        this.physics.add.collider(this.ball, [this.leftPaddle, this.rightPaddle],() => {
+        this.physics.add.collider(this.ball, [this.leftPaddle, this.rightPaddle], () => {
             this.ball.setVelocityX(this.ball.body.velocity.x * 1.1);
             this.ball.setVelocityY(this.ball.body.velocity.y * 1.1);
             this.ball.setAngularVelocity((this.ball.body as any).angularVelocity * -1.5);
             this.music.Beep();
         });
-        
+
         Phaser.Actions.Call(
             [this.ball],
-            (ball) =>{
+            (ball) => {
                 (ball.body as Phaser.Physics.Arcade.Body).onWorldBounds = true;
             },
             null)
@@ -72,17 +81,35 @@ export class MainScene extends Phaser.Scene {
         }
     }
 
+    messageReceived(clientId: string, message: string): void {
+        const baseMessage = JSON.parse(message) as Message<any>;
+        switch (baseMessage.type) {
+            case MessageType.ChangePaddlePosition:
+                const positionMessage = baseMessage as ChangePaddlePosition;
+                let paddle: Phaser.Physics.Arcade.Image;
+                if (clientId == NetworkState.leftyClientId) {
+                    paddle = this.leftPaddle;
+                } else if (clientId == NetworkState.rightyClientId) {
+                    paddle = this.rightPaddle;
+                }
+                paddle.setPosition(
+                    paddle.x,
+                    <number>this.game.config.height * positionMessage.body / 100)
+                break;
+        }
+    }
+
     onWorldBounds(_body, blockedUp: boolean, blockedDown: boolean, blockedLeft: boolean, blockedRight: boolean) {
         if (blockedUp || blockedDown) {
             this.music.Beep();
         }
-        
+
         if (blockedRight) {
             this.score.Lefty++;
-        } else if(blockedLeft) {
+        } else if (blockedLeft) {
             this.score.Righty++;
         }
-        
+
         if (this.score.HighestScore.value === environment.EndGameScore) {
             this.endGame();
         }
