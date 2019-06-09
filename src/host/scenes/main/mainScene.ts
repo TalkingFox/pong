@@ -36,8 +36,8 @@ export class MainScene extends Phaser.Scene {
     }
 
     preload(): void {
-        this.load.image("ball", "./src/host/assets/ball.jpg");
-        this.load.image("paddle", "./src/host/assets/paddle.jpg");
+        this.load.image("ball", "./assets/ball.jpg");
+        this.load.image("paddle", "./assets/paddle.jpg");
     }
 
     create(): void {
