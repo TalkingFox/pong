@@ -3,10 +3,13 @@ var pathToPhaser = path.join(__dirname, '/node_modules/phaser/');
 var phaser = path.join(pathToPhaser, 'dist/phaser.min.js');
 
 module.exports = {
-    entry: './src/boilerplate/game.ts',
+    entry: {
+        host: './src/host/game.ts',
+        client: './src/client/client.ts'
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
     },
     module: {
         rules: [
