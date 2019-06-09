@@ -12,7 +12,6 @@ export class Countdown extends OverlayElement {
         this.counterElement.textContent = value.toString();
     }
 
-
     public constructor() {
         super('countdown');
         this.counterElement = document.getElementById('countdownCounter') as HTMLParagraphElement;

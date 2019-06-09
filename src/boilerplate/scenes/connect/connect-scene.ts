@@ -7,6 +7,9 @@ export class ConnectScene extends Phaser.Scene {
     private host: FoxConnect.Host;
     private roomView: RoomView;
 
+    private leftyClientId: string;
+    private rightyClientId: string;
+
     constructor() {
         super({
             key: 'ConnectScene'
@@ -31,15 +34,38 @@ export class ConnectScene extends Phaser.Scene {
     create(): void {
         this.host.createRoom()
             .then((response: RoomCreatedResponse) => {
-                this.roomView.Room = response.room;
+                this.roomView.room = response.room;
             });
     }
 
-    private onClientDisconnected(clientId: string): void {
+    update(): void {
+        if (this.leftyClientId && this.rightyClientId) {
+            this.roomView.startGameButton.disabled = false;
+        }
+    }
 
+    private onClientDisconnected(clientId: string): void {
+        if (clientId == this.leftyClientId) {
+            this.roomView.lefty = 'Waiting for a Lefty';
+            this.leftyClientId = null;
+        }
+
+        if (clientId == this.rightyClientId) {
+            this.roomView.righty = 'Waiting for a Righty';
+            this.rightyClientId = null;
+        }
     }
 
     private guestJoined(clientId: string): void {
+        if (!this.leftyClientId) {
+            this.leftyClientId = clientId;
+            this.roomView.lefty = 'A Lefty has joined!';
+        }
+        
+        if (!this.rightyClientId) {
+            this.rightyClientId = clientId;
+            this.roomView.righty = 'A Righty has joined!';
+        }
     }
 
     private messageReceived(clientId: string, message: string): void {
