@@ -2,6 +2,8 @@ import { ConnectView } from "./connect-view";
 import * as FoxConnect from 'foxconnect';
 import { environment } from "./environment";
 import { WaitingView } from "./waiting-view";
+import { ReadyToPlay } from "../core/messaging/ready-to-play";
+import { Message } from "../core/messaging/message";
 
 export class ClientApp {
     private connectView: ConnectView;
@@ -31,7 +33,8 @@ export class ClientApp {
     }
 
     private readyToPlay(): void {
-        alert('Are you ready, MR Krabs?');
+        const message = new ReadyToPlay();
+        this.foxClient.send(message);
     }
 
     private onDisconnect(): void {
@@ -43,6 +46,8 @@ export class ClientApp {
     }
 
     private onMessageReceived(message: string): void {
-        alert('Message received: ' + message);
+        console.log(message);
+        const baseMessage = JSON.parse(message) as Message<any>;
+        console.log(baseMessage);
     }
 }

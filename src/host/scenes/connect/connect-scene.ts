@@ -2,6 +2,8 @@ import * as FoxConnect from 'foxconnect';
 import { environment } from '../../environment';
 import { RoomCreatedResponse } from 'foxconnect/dist/models/roomCreatedResponse';
 import { RoomView } from './room-view';
+import { Message, MessageType } from '../../../core/messaging/message';
+import { MainScene } from '../main/mainScene';
 
 export class ConnectScene extends Phaser.Scene {
     private host: FoxConnect.Host;
@@ -9,6 +11,9 @@ export class ConnectScene extends Phaser.Scene {
 
     private leftyClientId: string;
     private rightyClientId: string;
+
+    private leftyIsReady: boolean = false;
+    private rightyIsReady: boolean = false;
 
     constructor() {
         super({
@@ -42,6 +47,11 @@ export class ConnectScene extends Phaser.Scene {
         if (this.leftyClientId && this.rightyClientId) {
             this.roomView.startGameButton.disabled = false;
         }
+
+        if (this.leftyIsReady && this.rightyIsReady) {
+            this.roomView.visible = false;
+            this.scene.start('MainScene');
+        }
     }
 
     private onClientDisconnected(clientId: string): void {
@@ -60,15 +70,33 @@ export class ConnectScene extends Phaser.Scene {
         if (!this.leftyClientId) {
             this.leftyClientId = clientId;
             this.roomView.lefty = 'A Lefty has joined!';
+            return;
         }
         
         if (!this.rightyClientId) {
             this.rightyClientId = clientId;
             this.roomView.righty = 'A Righty has joined!';
+            return;
         }
     }
 
     private messageReceived(clientId: string, message: string): void {
+        console.log(message);
+        const baseMessage = JSON.parse(message) as Message<any>;
+        console.log(baseMessage);
 
+        switch(baseMessage.type) {
+            case MessageType.ReadyToPlay: 
+                if (this.leftyClientId == clientId) {
+                    this.leftyIsReady = true;
+                }
+                if (this.rightyClientId == clientId) {
+                    this.rightyIsReady = true;
+                }
+                console.log('someone is ready')
+                break;
+            default: 
+                alert('fuck');
+        }
     }
 }

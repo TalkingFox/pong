@@ -2,6 +2,7 @@ import "phaser";
 import { PongBallPlugin } from "./plugins/pong-ball-plugin";
 import { PongPaddlePlugin } from "./plugins/pong-paddle-plugin";
 import { ConnectScene } from "./scenes/connect/connect-scene";
+import { MainScene } from "./scenes/main/mainScene";
 
 // main game configuration
 const config: Phaser.Types.Core.GameConfig = {
@@ -43,4 +44,5 @@ export class Game extends Phaser.Game {
 // when the page is loaded, create our game instance
 window.addEventListener("load", () => {
     var game = new Game(config);
+    game.scene.add('MainScene', MainScene);
 });
