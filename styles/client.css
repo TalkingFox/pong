@@ -19,9 +19,22 @@ body>div {
     margin: auto;
 }
 
-#clientConnect {
+#clientConnect,
+#clientWaiting {
     text-align: center;
     font-size: 3rem;
+}
+
+button {
+    color: gold;
+    font-size: 3rem;
+    border-radius: 10px;
+    background-color: black;
+    border: solid 1px purple;
+}
+
+button:hover {
+    cursor: pointer;
 }
 
 #roomName {
@@ -32,19 +45,8 @@ body>div {
     text-align: center;
 }
 
-#roomJoin {
-    font-size: 3rem;
-    border-radius: 10px;
-    color: gold;
-    background: black;
-}
-
 #errorMessage {
     color: orangered;
-}
-
-button:hover {
-    cursor: pointer;
 }
 
 @keyframes lds-circle {
@@ -73,6 +75,8 @@ button:hover {
     opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
+    display: block;
+    margin: auto;
 }
 
 #clientSlider::-webkit-slider-thumb {
