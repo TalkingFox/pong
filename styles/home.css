@@ -1,0 +1,11 @@
+body {
+    text-align: center;
+    font-size: 3rem;
+}
+
+a {
+    border: solid 1px purple;
+    border-radius: 10px;
+    text-decoration: none;
+    color: gold;
+}
