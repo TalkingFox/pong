@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Pong!!!!!!</title>
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <link rel="stylesheet" type="text/css" href="styles/client.css">
+    <script src="dist/client.bundle.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Spectral&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="clientConnect" class="hidden">
+        <label>Enter the room name
+            <input id="roomName" />
+        </label>
+        <button id="roomJoin">Join Room</button>
+    </div>
+    <div id="clientWaiting" class="hidden">
+        <label>I'M READY TO PLAY!
+            <input type="checkbox" id="clientGoodToStart" />
+        </label>
+    </div>
+    <div id="clientControl" class="hidden">
+        <input type="range" id="clientSlider" />
+    </div>
+</body>
+
+</html>

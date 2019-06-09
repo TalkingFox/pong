@@ -1,4 +1,4 @@
-import { OverlayElement } from "../../ui/overlay-element";
+import { OverlayElement } from "../../../core/ui/overlay-element";
 
 export class RoomView extends OverlayElement {
     private roomName: HTMLParagraphElement;

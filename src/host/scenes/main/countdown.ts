@@ -1,4 +1,4 @@
-import { OverlayElement } from "../../ui/overlay-element";
+import { OverlayElement } from "../../../core/ui/overlay-element";
 
 export class Countdown extends OverlayElement {
     private counterElement: HTMLParagraphElement;
