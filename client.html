@@ -16,10 +16,17 @@
             <input id="roomName" />
         </label>
         <button id="roomJoin">Join Room</button>
+        <div id="circle-loader" class="loader hidden">
+            <div></div>
+        </div>
     </div>
     <div id="clientWaiting" class="hidden">
-        <label>I'M READY TO PLAY!
-            <input type="checkbox" id="clientGoodToStart" />
+        <button id="clientGoodToStart">I'm ready to play!</button>
+        <label id="clientGoodMessage" class="hidden">
+            Waiting for game to start...
+            <div id="waiting-loader" class="loader hidden">
+                <div></div>
+            </div>
         </label>
     </div>
     <div id="clientControl" class="hidden">

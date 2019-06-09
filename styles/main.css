@@ -2,8 +2,10 @@ body {
     background-color: black;
     height: 95vh;
     width: 95vw;
+    font-family: 'Spectral', serif;
+    color: gold;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
