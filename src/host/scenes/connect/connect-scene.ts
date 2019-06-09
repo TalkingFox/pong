@@ -48,7 +48,8 @@ export class ConnectScene extends Phaser.Scene {
 
         if (this.leftyIsReady && this.rightyIsReady) {
             this.roomView.visible = false;
-            this.host.sendToAll(new GameIsReady());
+            this.host.sendTo(NetworkState.leftyClientId, new GameIsReady('Lefty'));
+            this.host.sendTo(NetworkState.rightyClientId, new GameIsReady('Righty'));
             this.scene.start('MainScene', this.host);
         }
     }

@@ -6,6 +6,7 @@ import { ReadyToPlay } from "../core/messaging/ready-to-play";
 import { Message, MessageType } from "../core/messaging/message";
 import { GameView } from "./game-view";
 import { ChangePaddlePosition } from "../core/messaging/change-paddle-position";
+import { GameIsReady } from "../core/messaging/game-is-ready";
 
 export class ClientApp {
     private connectView: ConnectView;
@@ -62,7 +63,9 @@ export class ClientApp {
         const baseMessage = JSON.parse(message) as Message<any>;
         switch (baseMessage.type) {
             case MessageType.GameIsReady:
+                const readyMessage = baseMessage as GameIsReady;
                 this.waitingView.visible = false;
+                this.gameView.PlayerName = readyMessage.body;
                 this.gameView.visible = true;
                 break;
         }
